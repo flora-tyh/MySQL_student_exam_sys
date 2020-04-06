@@ -1,0 +1,80 @@
+-- 创建表语句
+CREATE DATABASE student_examination_sys DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
+USE student_examination_sys;
+
+-- 创建账户表，管理已经注册过的账户
+CREATE TABLE `account` (
+  `id` varchar(15) NOT NULL,
+  `password` varchar(20) DEFAULT NULL,
+  `privilege` varchar(10) DEFAULT NULL,
+  `name` varchar(5) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+INSERT INTO `student_examination_sys`.`account` (`id`, `password`, `privilege`) VALUES ('101', '123', '学生', '小红');
+INSERT INTO `student_examination_sys`.`account` (`id`, `password`, `privilege`) VALUES ('201', '123', '老师', '周老师');
+INSERT INTO `student_examination_sys`.`account` (`id`, `password`, `privilege`) VALUES ('301', '123', '超级管理员', '王校长');
+
+-- 创建学生表，管理学生信息
+CREATE TABLE `student` (
+  `id` varchar(15) NOT NULL,
+  `name` varchar(5) DEFAULT NULL,
+  `sex` varchar(2) DEFAULT NULL,
+  `age` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+INSERT INTO `student_examination_sys`.`student` (`id`, `name`, `sex`, `age`) VALUES ('101', '小红', '女', '16');
+INSERT INTO `student_examination_sys`.`student` (`id`, `name`, `sex`, `age`) VALUES ('102', '小智', '男', '18');
+INSERT INTO `student_examination_sys`.`student` (`id`, `name`, `sex`, `age`) VALUES ('103', '小明', '男', '17');
+
+-- 创建科目表，管理科目信息
+CREATE TABLE `subject` (
+  `id` varchar(15) NOT NULL,
+  `name` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+INSERT INTO `student_examination_sys`.`subject` (`id`, `name`) VALUES ('01', '语文');
+INSERT INTO `student_examination_sys`.`subject` (`id`, `name`) VALUES ('02', '数学');
+INSERT INTO `student_examination_sys`.`subject` (`id`, `name`) VALUES ('03', '物理');
+
+-- 创建老师表
+CREATE TABLE `teacher` (
+  `id` varchar(15) NOT NULL,
+  `name` varchar(5) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+INSERT INTO `student_examination_sys`.`teacher` (`id`, `name`) VALUES ('201', '周老师');
+INSERT INTO `student_examination_sys`.`teacher` (`id`, `name`) VALUES ('202', '王老师');
+INSERT INTO `student_examination_sys`.`teacher` (`id`, `name`) VALUES ('203', '李老师');
+
+-- 创建学生选修表，管理学生选修课程考试和成绩的信息
+CREATE TABLE `student_registration` (
+  `subject_id` varchar(15) NOT NULL,
+  `student_id` varchar(15) NOT NULL,
+  `exam` tinyint(1) DEFAULT '0',
+  `score` int DEFAULT NULL,
+  PRIMARY KEY (`subject_id`,`student_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+INSERT INTO `student_examination_sys`.`student_registration` (`subject_id`, `student_id`, `exam`, `score`) VALUES ('01', '101', '1', '80');
+INSERT INTO `student_examination_sys`.`student_registration` (`subject_id`, `student_id`, `exam`) VALUES ('01', '102', '0');
+INSERT INTO `student_examination_sys`.`student_registration` (`subject_id`, `student_id`, `exam`, `score`) VALUES ('02', '102', '1', '90');
+INSERT INTO `student_examination_sys`.`student_registration` (`subject_id`, `student_id`, `exam`, `score`) VALUES ('02', '101', '1', '60');
+INSERT INTO `student_examination_sys`.`student_registration` (`subject_id`, `student_id`, `exam`) VALUES ('03', '101', '0');
+INSERT INTO `student_examination_sys`.`student_registration` (`subject_id`, `student_id`, `exam`, `score`) VALUES ('03', '102', '1', '85');
+
+
+-- 创建老师授课表
+CREATE TABLE `teacher_schedule` (
+  `teacher_id` varchar(15) NOT NULL,
+  `subject_id` varchar(15) NOT NULL,
+  `exam` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`teacher_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+INSERT INTO `student_examination_sys`.`teacher_schedule` (`teacher_id`, `subject_id`, `exam`) VALUES ('201', '01', '1');
+INSERT INTO `student_examination_sys`.`teacher_schedule` (`teacher_id`, `subject_id`, `exam`) VALUES ('202', '02', '1');
+INSERT INTO `student_examination_sys`.`teacher_schedule` (`teacher_id`, `subject_id`, `exam`) VALUES ('203', '03', '1');
