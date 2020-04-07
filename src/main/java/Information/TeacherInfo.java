@@ -4,9 +4,6 @@ public class TeacherInfo {
     private String name;
     private String id;
 
-    public TeacherInfo() {
-    }
-
     public TeacherInfo(String name, String id) {
         this.name = name;
         this.id = id;

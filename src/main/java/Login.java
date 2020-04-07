@@ -1,5 +1,3 @@
-
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,10 +9,8 @@ import Instrument.JDBCUtils;
 public class Login {
 
     public User loginInfo() {
-        Boolean isLoginInfoCorrect = false;
         String loginInfo = null;
-        String privilege = null;
-        while (!isLoginInfoCorrect) {
+        while (true) {
             Scanner sc = new Scanner(System.in);
             loginInfo = sc.next();
 
@@ -24,13 +20,11 @@ public class Login {
                 String password = loginInfoArr[1];
                 User user = loginCertification(id, password);
                 if (user != null) {
-                    isLoginInfoCorrect = true;
                     return user;
                 }
             }
             System.out.println("请输入正确的账号密码");
         }
-        return null;
     }
 
 
@@ -48,8 +42,7 @@ public class Login {
             rs = ptmt.executeQuery();
 
             if (rs.next()) {
-                User user = new User(id, rs.getString("privilege"), rs.getString("name"));
-                return user;
+                return new User(id, rs.getString("privilege"), rs.getString("name"));
             }
             return null;
         } catch (SQLException e) {

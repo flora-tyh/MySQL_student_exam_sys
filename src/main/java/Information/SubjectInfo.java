@@ -5,9 +5,6 @@ public class SubjectInfo {
     private String id;
     private String teacher;
 
-    public SubjectInfo() {
-    }
-
     public SubjectInfo(String name, String id, String teacher) {
         this.name = name;
         this.id = id;
@@ -18,24 +15,12 @@ public class SubjectInfo {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getTeacher() {
         return teacher;
-    }
-
-    public void setTeacher(String teacher) {
-        this.teacher = teacher;
     }
 
     @Override

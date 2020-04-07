@@ -3,7 +3,7 @@ import Privilege.Student;
 import Privilege.Teacher;
 
 public class Application {
-
+  @SuppressWarnings("InfiniteLoopStatement")
   public static void main(String[] args) {
     String privilege = null;
     while (true) {
