@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+
 import Instrument.JDBCUtils;
 
 public class SQLexecution {
@@ -20,7 +21,7 @@ public class SQLexecution {
         Connection conn = null;
         PreparedStatement ptmt = null;
         ResultSet rs = null;
-        List<StudentInfo> studentInfoList  = new ArrayList<>();
+        List<StudentInfo> studentInfoList = new ArrayList<>();
 
         try {
             conn = JDBCUtils.getConnection();
@@ -47,7 +48,6 @@ public class SQLexecution {
     }
 
     public List<StudentInfo> getStudentScore(String studentId) {
-        getStudentInfo(studentId);
         Connection conn = null;
         PreparedStatement ptmt = null;
         ResultSet rs = null;
@@ -71,7 +71,6 @@ public class SQLexecution {
             while (rs.next()) {
                 StudentInfo studentInfo = new StudentInfo(rs.getString("name"), rs.getString("subject"), rs.getInt("score"));
                 studentInfoList.add(studentInfo);
-                System.out.println(String.format("科目：%s 分数：%d", rs.getString("subject"), rs.getInt("score")));
             }
             return studentInfoList;
         } catch (SQLException e) {
@@ -167,30 +166,53 @@ public class SQLexecution {
         }
     }
 
-    public void getTeacherSubject() {
-        Scanner sc = new Scanner(System.in);
-        String teacherId = sc.next();
+    public List<SubjectInfo> getTeacherSubject(String teacherId) {
         Connection conn = null;
         PreparedStatement ptmt = null;
         ResultSet rs = null;
         TeacherInfo teacherInfo = getTeacherInfo(teacherId);
+        List<SubjectInfo> subjectInfoList = new ArrayList<>();
 
         try {
             conn = JDBCUtils.getConnection();
-                String sql = "SELECT t1.id AS sub_id,\n" +
-                        "\tt1.name AS sub_name\n" +
-                        "FROM subject AS t1\n" +
-                        "INNER JOIN\n" +
-                        "\tteacher_schedule AS t2\n" +
-                        "ON t1.id = t2.subject_id\n" +
-                        "WHERE t2.teacher_id  = ?";
-                ptmt = conn.prepareStatement(sql);
-                ptmt.setString(1, teacherId);
+            String sql = "SELECT t1.id AS sub_id,\n" +
+                    "\tt1.name AS sub_name\n" +
+                    "FROM subject AS t1\n" +
+                    "INNER JOIN\n" +
+                    "\tteacher_schedule AS t2\n" +
+                    "ON t1.id = t2.subject_id\n" +
+                    "WHERE t2.teacher_id  = ?";
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, teacherId);
             rs = ptmt.executeQuery();
             while (rs.next()) {
                 SubjectInfo subjectInfo = new SubjectInfo(rs.getString("sub_name"), rs.getString("sub_id"), teacherInfo.getName());
-                System.out.println(subjectInfo);
+                subjectInfoList.add(subjectInfo);
             }
+            return subjectInfoList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            JDBCUtils.close(rs, ptmt, conn);
+        }
+    }
+
+    public List<TeacherInfo> getTeacherInfo() {
+        Connection conn = null;
+        PreparedStatement ptmt = null;
+        ResultSet rs = null;
+        List<TeacherInfo> teacherInfoList = new ArrayList<>();
+
+        try {
+            conn = JDBCUtils.getConnection();
+            String sql = "SELECT id, name FROM teacher";
+            ptmt = conn.prepareStatement(sql);
+            rs = ptmt.executeQuery();
+            while (rs.next()) {
+                TeacherInfo teacherInfo = new TeacherInfo(rs.getString("name"), rs.getString("id"));
+                teacherInfoList.add(teacherInfo);
+            }
+            return teacherInfoList;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -202,23 +224,18 @@ public class SQLexecution {
         Connection conn = null;
         PreparedStatement ptmt = null;
         ResultSet rs = null;
+        TeacherInfo teacherInfo = new TeacherInfo();
 
         try {
             conn = JDBCUtils.getConnection();
-            if (teacherId != null) {
                 String sql = "SELECT id, name FROM teacher WHERE id = ?";
                 ptmt = conn.prepareStatement(sql);
                 ptmt.setString(1, teacherId);
-            } else {
-                String sql = "SELECT id, name FROM teacher";
-                ptmt = conn.prepareStatement(sql);
-            }
             rs = ptmt.executeQuery();
             while (rs.next()) {
-                TeacherInfo teacherInfo = new TeacherInfo(rs.getString("name"), rs.getString("id"));
-                System.out.println(teacherInfo);
+                teacherInfo = new TeacherInfo(rs.getString("name"), rs.getString("id"));
             }
-            return null;
+            return teacherInfo;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {

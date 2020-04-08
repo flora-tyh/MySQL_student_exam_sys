@@ -2,6 +2,7 @@ package Privilege;
 
 import Information.StudentInfo;
 import Information.SubjectInfo;
+import Information.TeacherInfo;
 
 import java.util.List;
 import java.util.Scanner;
@@ -75,15 +76,21 @@ public class Administrator {
                 break;
             case "1.2.3" :
                 System.out.println("请输入老师工号：");
-                sqLexecution.getTeacherSubject();
+                String aTeacherId = sc.next();
+                TeacherInfo teacherInfo = sqLexecution.getTeacherInfo(aTeacherId);
+                List<SubjectInfo> subjectInfoList1 = sqLexecution.getTeacherSubject(aTeacherId);
+                System.out.println("老师姓名:" + teacherInfo.getName() + " 工号:" + teacherInfo.getId());
+                for(SubjectInfo s : subjectInfoList1) {
+                    System.out.println("科目:" + s.getName()  + " 科目编号:" + s.getId());
+                }
                 break;
             case "1.3.1" :
                 sqLexecution.getTeacherInfo(null);
                 break;
             case "1.3.2" :
                 System.out.println("请输入老师工号：");
-                String teacherId = sc.next();
-                sqLexecution.getTeacherInfo(teacherId);
+                String bTeacherId = sc.next();
+                sqLexecution.getTeacherInfo(bTeacherId);
                 break;
             case "2.1" :
                 System.out.println("请输入学生信息(例如：学号：1001，姓名：小明，年龄：18，性别：男)：");

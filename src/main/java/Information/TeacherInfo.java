@@ -9,6 +9,9 @@ public class TeacherInfo {
         this.id = id;
     }
 
+    public TeacherInfo() {
+    }
+
     public String getName() {
         return name;
     }
