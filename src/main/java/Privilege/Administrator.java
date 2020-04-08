@@ -85,7 +85,10 @@ public class Administrator {
                 }
                 break;
             case "1.3.1" :
-                sqLexecution.getTeacherInfo(null);
+                List<TeacherInfo> teacherInfoList = sqLexecution.getTeacherInfo();
+                for(TeacherInfo t : teacherInfoList) {
+                    System.out.println("老师姓名:" + t.getName() + " 工号:" + t.getId());
+                }
                 break;
             case "1.3.2" :
                 System.out.println("请输入老师工号：");
