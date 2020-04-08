@@ -46,31 +46,34 @@ public class SQLexecution {
         }
     }
 
-    public void getStudentScore() {
-
-        Scanner sc = new Scanner(System.in);
-        String studentId = sc.next();
+    public List<StudentInfo> getStudentScore(String studentId) {
         getStudentInfo(studentId);
         Connection conn = null;
         PreparedStatement ptmt = null;
         ResultSet rs = null;
+        List<StudentInfo> studentInfoList = new ArrayList<>();
 
         String sql = "SELECT t2.name AS subject,\n" +
-                "\tt1.score\n" +
+                "t1.score AS score,\n" +
+                "t3.name AS name\n" +
                 "FROM student_registration AS t1\n" +
-                "INNER JOIN\n" +
-                "\tsubject AS t2\n" +
+                "INNER JOIN subject AS t2\n" +
                 "\tON t1.subject_id = t2.id\n" +
+                "RIGHT JOIN student AS t3\n" +
+                "\tON t1.student_id = t3.id\n" +
                 "WHERE t1.student_id = ?\n" +
-                "\tAND t1.exam = 1;";
+                "AND t1.exam = 1;";
         try {
             conn = JDBCUtils.getConnection();
             ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, studentId);
             rs = ptmt.executeQuery();
             while (rs.next()) {
+                StudentInfo studentInfo = new StudentInfo(rs.getString("name"), rs.getString("subject"), rs.getInt("score"));
+                studentInfoList.add(studentInfo);
                 System.out.println(String.format("科目：%s 分数：%d", rs.getString("subject"), rs.getInt("score")));
             }
+            return studentInfoList;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {

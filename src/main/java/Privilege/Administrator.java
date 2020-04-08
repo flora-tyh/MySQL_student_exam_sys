@@ -47,10 +47,12 @@ public class Administrator {
                 }
                 break;
             case "1.1.2" :
-                List<StudentInfo> studentInfo = sqLexecution.getStudentInfo(null);
+                System.out.println("请输入学生学号：");
+                String studentId = sc.next();
+                List<StudentInfo> studentInfo = sqLexecution.getStudentScore(studentId);
                 for(StudentInfo s : studentInfo) {
-                    System.out.println("学号：" + s.getId() + "，姓名： " + s.getName() +
-                            ", 年龄： " + s.getAge() + ", 性别： " + s.getSex());
+                    System.out.println("姓名： " + s.getName() +
+                            ", 科目： " + s.getSubject() + ", 成绩： " + s.getScore());
                 }
                 break;
             case "1.1.3" :
