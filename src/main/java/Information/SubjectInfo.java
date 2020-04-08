@@ -22,9 +22,4 @@ public class SubjectInfo {
     public String getTeacher() {
         return teacher;
     }
-
-    @Override
-    public String toString() {
-        return "科目:" + name  + " 科目编号:" + id + " 任课老师 :" + teacher;
-    }
 }

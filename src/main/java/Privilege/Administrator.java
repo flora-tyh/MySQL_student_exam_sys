@@ -1,5 +1,8 @@
 package Privilege;
 
+import Information.SubjectInfo;
+
+import java.util.List;
 import java.util.Scanner;
 
 public class Administrator {
@@ -47,7 +50,10 @@ public class Administrator {
                 sqLexecution.getTeacherScore();
                 break;
             case "1.2.1" :
-                sqLexecution.getSubjectInfo(null);
+                List<SubjectInfo> subjectInfoList = sqLexecution.getSubjectInfo(null);
+                for (SubjectInfo s : subjectInfoList) {
+                    System.out.println("科目:" + s.getName()  + " 科目编号:" + s.getId() + " 任课老师 :" + s.getTeacher());
+                }
                 break;
             case "1.2.2" :
                 System.out.println("请输入科目名称（目前只有语文，数学，物理）：");

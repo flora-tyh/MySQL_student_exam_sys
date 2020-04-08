@@ -117,10 +117,11 @@ public class SQLexecution {
         }
     }
 
-    public void getSubjectInfo(String subjectName) {
+    public List<SubjectInfo> getSubjectInfo(String subjectName) {
         Connection conn = null;
         PreparedStatement ptmt = null;
         ResultSet rs = null;
+        List<SubjectInfo> subjectInfoList = new ArrayList<>();
 
         try {
             conn = JDBCUtils.getConnection();
@@ -150,8 +151,9 @@ public class SQLexecution {
             rs = ptmt.executeQuery();
             while (rs.next()) {
                 SubjectInfo subjectInfo = new SubjectInfo(rs.getString("sub_name"), rs.getString("sub_id"), rs.getString("teac_name"));
-                System.out.println(subjectInfo);
+                subjectInfoList.add(subjectInfo);
             }
+            return subjectInfoList;
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
