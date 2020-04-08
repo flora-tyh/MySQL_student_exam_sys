@@ -16,10 +16,11 @@ import Instrument.JDBCUtils;
 
 public class SQLexecution {
 
-    public void getStudentInfo(String studentId) {
+    public List<StudentInfo> getStudentInfo(String studentId) {
         Connection conn = null;
         PreparedStatement ptmt = null;
         ResultSet rs = null;
+        List<StudentInfo> studentInfoList  = new ArrayList<>();
 
         try {
             conn = JDBCUtils.getConnection();
@@ -35,8 +36,9 @@ public class SQLexecution {
 
             while (rs.next()) {
                 StudentInfo studentInfo = new StudentInfo(rs.getString("id"), rs.getString("name"), rs.getInt("age"), rs.getString("sex"));
-                System.out.println(studentInfo);
+                studentInfoList.add(studentInfo);
             }
+            return studentInfoList;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {

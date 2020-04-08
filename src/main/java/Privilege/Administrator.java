@@ -1,5 +1,6 @@
 package Privilege;
 
+import Information.StudentInfo;
 import Information.SubjectInfo;
 
 import java.util.List;
@@ -39,11 +40,18 @@ public class Administrator {
         boolean isLogout = false;
         switch (selectOperate) {
             case "1.1.1" :
-                sqLexecution.getStudentInfo(null);
+                List<StudentInfo> studentInfoList = sqLexecution.getStudentInfo(null);
+                for(StudentInfo s : studentInfoList) {
+                    System.out.println("学号：" + s.getId() + "，姓名： " + s.getName() +
+                            ", 年龄： " + s.getAge() + ", 性别： " + s.getSex());
+                }
                 break;
             case "1.1.2" :
-                System.out.println("请输入学生学号(目前只有101,102,103三个学生)：");
-                sqLexecution.getStudentScore();
+                List<StudentInfo> studentInfo = sqLexecution.getStudentInfo(null);
+                for(StudentInfo s : studentInfo) {
+                    System.out.println("学号：" + s.getId() + "，姓名： " + s.getName() +
+                            ", 年龄： " + s.getAge() + ", 性别： " + s.getSex());
+                }
                 break;
             case "1.1.3" :
                 System.out.println("请输入老师工号（目前只有201，202,203三个老师）：");
@@ -58,7 +66,10 @@ public class Administrator {
             case "1.2.2" :
                 System.out.println("请输入科目名称（目前只有语文，数学，物理）：");
                 String subjectName = sc.next();
-                sqLexecution.getSubjectInfo(subjectName);
+                List<SubjectInfo> subjectInfo = sqLexecution.getSubjectInfo(subjectName);
+                for (SubjectInfo s : subjectInfo) {
+                    System.out.println("科目:" + s.getName()  + " 科目编号:" + s.getId() + " 任课老师 :" + s.getTeacher());
+                }
                 break;
             case "1.2.3" :
                 System.out.println("请输入老师工号：");
