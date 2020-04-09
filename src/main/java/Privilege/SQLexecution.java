@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import Instrument.JDBCUtils;
 
@@ -243,17 +244,13 @@ public class SQLexecution {
         }
     }
 
-    public void addStudentInfo() {
-        Scanner sc = new Scanner(System.in);
-        String newStudentInfo = sc.next();
+    public StudentInfo addStudentInfo(String newStudentInfo) {
         String[] stringArrayList = newStudentInfo.split("：");
-        List<List<String>> infoSplit = new ArrayList<>();
-        for (int i = 1; i < 4; i++) {
-            infoSplit.add(Arrays.asList(stringArrayList[i].split("，")));
-        }
-        StudentInfo studentInfo = new StudentInfo(infoSplit.get(0).get(0), infoSplit.get(1).get(0),
-                Integer.parseInt(infoSplit.get(2).get(0)), Character.toString(stringArrayList[4].charAt(0)));
-        System.out.println(studentInfo);
+        List<List<String>> infoSplit = Arrays.stream(stringArrayList)
+                .map(s -> Arrays.asList(s.split("，")))
+                .collect(Collectors.toList());
+        StudentInfo studentInfo = new StudentInfo(infoSplit.get(1).get(0), infoSplit.get(2).get(0),
+                Integer.parseInt(infoSplit.get(3).get(0)), Character.toString(stringArrayList[4].charAt(0)));
 
         Connection conn = null;
         PreparedStatement ptmt = null;
@@ -267,7 +264,7 @@ public class SQLexecution {
             ptmt.setString(3, studentInfo.getSex());
             ptmt.setInt(4, studentInfo.getAge());
             ptmt.executeUpdate();
-            System.out.println(String.format("添加学生%s %s成功", studentInfo.getName(), studentInfo.getId()));
+            return studentInfo;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -275,9 +272,7 @@ public class SQLexecution {
         }
     }
 
-    public void addSubjectInfo() {
-        Scanner sc = new Scanner(System.in);
-        String newSubjectInfo = sc.next();
+    public SubjectInfo addSubjectInfo(String newSubjectInfo) {
         String[] strings = newSubjectInfo.split("-");
         SubjectInfo subjectInfo = new SubjectInfo(strings[0], strings[1], null);
         Connection conn = null;
@@ -290,7 +285,7 @@ public class SQLexecution {
             ptmt.setString(1, subjectInfo.getId());
             ptmt.setString(2, subjectInfo.getName());
             ptmt.executeUpdate();
-            System.out.println(String.format("添加课程%s %s成功", subjectInfo.getName(), subjectInfo.getId()));
+            return subjectInfo;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {

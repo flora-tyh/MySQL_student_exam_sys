@@ -62,17 +62,15 @@ public class Administrator {
                 break;
             case "1.2.1" :
                 List<SubjectInfo> subjectInfoList = sqLexecution.getSubjectInfo(null);
-                for (SubjectInfo s : subjectInfoList) {
-                    System.out.println("科目:" + s.getName()  + " 科目编号:" + s.getId() + " 任课老师 :" + s.getTeacher());
-                }
+                subjectInfoList.forEach(s ->
+                        System.out.println("科目:" + s.getName()  + " 科目编号:" + s.getId() + " 任课老师 :" + s.getTeacher()));
                 break;
             case "1.2.2" :
                 System.out.println("请输入科目名称（目前只有语文，数学，物理）：");
                 String subjectName = sc.next();
                 List<SubjectInfo> subjectInfo = sqLexecution.getSubjectInfo(subjectName);
-                for (SubjectInfo s : subjectInfo) {
-                    System.out.println("科目:" + s.getName()  + " 科目编号:" + s.getId() + " 任课老师 :" + s.getTeacher());
-                }
+                subjectInfo.forEach(s ->
+                        System.out.println("科目:" + s.getName()  + " 科目编号:" + s.getId() + " 任课老师 :" + s.getTeacher()));
                 break;
             case "1.2.3" :
                 System.out.println("请输入老师工号：");
@@ -80,15 +78,11 @@ public class Administrator {
                 TeacherInfo teacherInfo = sqLexecution.getTeacherInfo(aTeacherId);
                 List<SubjectInfo> subjectInfoList1 = sqLexecution.getTeacherSubject(aTeacherId);
                 System.out.println("老师姓名:" + teacherInfo.getName() + " 工号:" + teacherInfo.getId());
-                for(SubjectInfo s : subjectInfoList1) {
-                    System.out.println("科目:" + s.getName()  + " 科目编号:" + s.getId());
-                }
+                subjectInfoList1.forEach(s -> System.out.println("科目:" + s.getName()  + " 科目编号:" + s.getId()));
                 break;
             case "1.3.1" :
                 List<TeacherInfo> teacherInfoList = sqLexecution.getTeacherInfo();
-                for(TeacherInfo t : teacherInfoList) {
-                    System.out.println("老师姓名:" + t.getName() + " 工号:" + t.getId());
-                }
+                teacherInfoList.forEach(t -> System.out.println("老师姓名:" + t.getName() + " 工号:" + t.getId()));
                 break;
             case "1.3.2" :
                 System.out.println("请输入老师工号：");
@@ -97,11 +91,15 @@ public class Administrator {
                 break;
             case "2.1" :
                 System.out.println("请输入学生信息(例如：学号：1001，姓名：小明，年龄：18，性别：男)：");
-                sqLexecution.addStudentInfo();
+                String newStudentInfo = sc.next();
+                StudentInfo studentInfo1 = sqLexecution.addStudentInfo(newStudentInfo);
+                System.out.println(String.format("添加学生%s %s成功", studentInfo1.getName(), studentInfo1.getId()));
                 break;
             case "2.2" :
                 System.out.println("请输入科目信息(科目名称 科目编号)：例如 物理-03");
-                sqLexecution.addSubjectInfo();
+                String newSubjectInfo = sc.next();
+                SubjectInfo subjectInfo1 = sqLexecution.addSubjectInfo(newSubjectInfo);
+                System.out.println(String.format("添加课程%s %s成功", subjectInfo1.getName(), subjectInfo1.getId()));
                 break;
             case "3.1" :
                 System.out.println("请输入修改信息（学生学号-科目编号-成绩）：例如 101-01-20");
@@ -109,28 +107,28 @@ public class Administrator {
                 break;
             case "4.1":
                 System.out.println("请输入您需要删除的学生学号（初始有101,102,103）：");
-                int i = sqLexecution.deleteInfo("student", "学生");
-                if (i > 0){
+                int deleteRow = sqLexecution.deleteInfo("student", "学生");
+                if (deleteRow > 0){
                     System.out.println("删除成功！");
-                } else if (i == 0) {
+                } else if (deleteRow == 0) {
                     System.out.println("没有该学生！");
                 };
                 break;
             case "4.2":
                 System.out.println("请输入您需要删除的课程编号（初始有01,02,03：");
-                int j = sqLexecution.deleteInfo("subject", "课程");
-                if (j > 0){
+                deleteRow = sqLexecution.deleteInfo("subject", "课程");
+                if (deleteRow > 0){
                     System.out.println("删除成功！");
-                } else if (j == 0) {
+                } else if (deleteRow == 0) {
                     System.out.println("没有该课程！");
                 };
                 break;
             case "4.3":
                 System.out.println("请输入您需要删除的老师工号（初始有201,202,203）：");
-                int k = sqLexecution.deleteInfo("teacher", "老师");
-                if (k > 0){
+                deleteRow = sqLexecution.deleteInfo("teacher", "老师");
+                if (deleteRow > 0){
                     System.out.println("删除成功！");
-                } else if (k == 0) {
+                } else if (deleteRow == 0) {
                     System.out.println("没有该老师！");
                 };
                 break;
